@@ -1,0 +1,23 @@
+{
+  "name": "react-drag-drop",
+  "version": "1.0.0",
+  "description": "Simple, flexible hooks for drag and drop in React.",
+  "main": "index.js",
+  "scripts": {
+    "start": "parcel examples/src/index.html --out-dir build"
+  },
+  "author": "Arti Schmidt",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
+    "fast-deep-equal": "^3.1.3",
+    "parcel": "^1.12.4",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "typescript": "^4.1.3"
+  },
+  "alias": {
+    "react-drag-drop": "./src"
+  }
+}
