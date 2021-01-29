@@ -1,32 +1,33 @@
 import {useState, useEffect, DependencyList, RefCallback} from 'react';
 import {addDropItem, removeDropItem} from './manager';
 
-type DropConfig = {
+export type DropConfig = {
     deps?: DependencyList,
     payload?: any,
     disabled?: boolean
 };
 
-export const useDrop = <T extends HTMLElement>(
-    config: DropConfig
-): RefCallback<T> => {
-    const [element, setElement] = useState<T | null>(null);
+// todo: shares redundant code with useDrag
+export const useDrop = (
+    config: DropConfig = {}
+): RefCallback<HTMLElement> => {
+    const [element, setElement] = useState<HTMLElement | null>(null);
 
-    if (!config.deps)
-        config.deps = [];
-    if (config.disabled === undefined)
-        config.disabled = false;
+    const normalizedConfig = {
+        payload: config.payload,
+        disabled: !!config.disabled,
+        deps: config.deps || []
+    };
 
     useEffect(() => {
         if (!element) return;
         const item = {
-            element: element,
-            payload: config.payload,
-            disabled: config.disabled!
+            ...normalizedConfig,
+            element
         };
         addDropItem(item);
         return () => removeDropItem(item);
-    }, [...config.deps, element]);
+    }, [...normalizedConfig.deps, element]);
 
     return setElement;
 };

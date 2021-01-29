@@ -18,17 +18,15 @@ type DropItem = {
 type State = {
     dragging: boolean,
     hovering: boolean,
-    // drag item when drag first starts
-    // its properties, like payload, may be updated during drag, and it contains a copy of
-    // the original drag element which may also be updated (used for initialElementPosition)
-    initialDragItem: DragItem | null,
     dragItem: DragItem | null,
     dropItem: DropItem | null,
     initialPointerPosition: Point | null,
-    pointerPosition: Point | null
+    pointerPosition: Point | null,
+    initialElementPosition: Point | null
 };
 
-export type DerivedState = {
+// was DerivedState but typescript kept displaying that instead of aliases
+export type DragDropState = {
     dragging: boolean,
     hovering: boolean,
     dragPayload: any,
@@ -40,7 +38,7 @@ export type DerivedState = {
     displacement: Point | null
 };
 
-type Handler = (state: DerivedState, prevState: DerivedState) => void;
+type Handler = (state: DragDropState, prevState: DragDropState) => void;
 
 export type Subscriber = {
     onDragStart?: Handler,
@@ -55,16 +53,15 @@ export type Subscriber = {
 const initialState: State = {
     dragging: false,
     hovering: false,
-    initialDragItem: null,
     dragItem: null,
     dropItem: null,
     initialPointerPosition: null,
-    pointerPosition: null
+    pointerPosition: null,
+    initialElementPosition: null
 };
 
-const getDerivedState = (state: State): DerivedState => {
+const getDragDropState = (state: State): DragDropState => {
     const {
-        initialDragItem,
         dragItem,
         dropItem,
         ...rest
@@ -75,7 +72,6 @@ const getDerivedState = (state: State): DerivedState => {
             dragPayload: undefined,
             dropPayload: undefined,
             initialPointerPosition: null,
-            initialElementPosition: null,
             elementPosition: null,
             displacement: null
         };
@@ -84,25 +80,20 @@ const getDerivedState = (state: State): DerivedState => {
         x: state.pointerPosition!.x - state.initialPointerPosition!.x,
         y: state.pointerPosition!.y - state.initialPointerPosition!.y
     };
-    const initialElementPosition = {
-        x: initialDragItem!.element.getBoundingClientRect().left,
-        y: initialDragItem!.element.getBoundingClientRect().top
-    };
     const elementPosition = {
-        x: initialElementPosition.x + displacement.x,
-        y: initialElementPosition.y + displacement.y
+        x: state.initialElementPosition!.x + displacement.x,
+        y: state.initialElementPosition!.y + displacement.y
     };
     return {
         ...rest,
         dragPayload: dragItem?.payload,
         dropPayload: dropItem?.payload,
-        initialElementPosition,
         elementPosition,
         displacement
     };
 };
 
-export const initialDerivedState = getDerivedState(initialState);
+export const initialDragDropState = getDragDropState(initialState);
 
 // todo?: switch to Redux and use store as observable for events
 // to make state management slightly neater
@@ -152,9 +143,9 @@ export const unsubscribe = (subscriber: Subscriber) => {
 
 const publish = (type: keyof Subscriber) => {
     subscribers.forEach(subscriber => {
-        subscriber[type]?.(getDerivedState(state), getDerivedState(prevState));
+        subscriber[type]?.(getDragDropState(state), getDragDropState(prevState));
         if (type !== 'onAny')
-            subscriber.onAny?.(getDerivedState(state), getDerivedState(prevState));
+            subscriber.onAny?.(getDragDropState(state), getDragDropState(prevState));
     });
 };
 
@@ -200,14 +191,14 @@ const handlePointerDown = (event: PointerEvent) => {
         ...state,
         dragging: true,
         hovering: !!dropItem,
-        initialDragItem: {
-            ...dragItem,
-            element: <HTMLElement>dragItem.element.cloneNode()
-        },
         dragItem: dragItem,
         dropItem: dropItem,
         initialPointerPosition: point,
-        pointerPosition: point
+        pointerPosition: point,
+        initialElementPosition: {
+            x: dragItem.element.getBoundingClientRect().x,
+            y: dragItem.element.getBoundingClientRect().y
+        }
     };
     publish('onDragStart');
     if (state.hovering)
@@ -275,9 +266,6 @@ const runOnFrame = (fn: (arg: any) => any) => {
         frameId = requestAnimationFrame(() => fn(arg));
     };
 };
-
-// item payloads and other config are not updated between drag and drop events
-// use a global state manager for this
 
 // todo?: dom layout changes will not fire appropriate events like hover start and end
 

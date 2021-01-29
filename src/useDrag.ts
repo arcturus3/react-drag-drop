@@ -1,33 +1,34 @@
 import {useState, useEffect, DependencyList, RefCallback} from 'react';
 import {addDragItem, removeDragItem} from './manager';
 
-type DragConfig = {
+// todo: threshold
+export type DragConfig = {
     deps?: DependencyList,
     payload?: any,
     disabled?: boolean
 };
 
-export const useDrag = <T extends HTMLElement>(
-    config: DragConfig
-): RefCallback<T> => {
+export const useDrag = (
+    config: DragConfig = {}
+): RefCallback<HTMLElement> => {
     // instead of ref to guarantee rerender when element changes for dependency list
-    const [element, setElement] = useState<T | null>(null);
+    const [element, setElement] = useState<HTMLElement | null>(null);
 
-    if (!config.deps)
-        config.deps = [];
-    if (config.disabled === undefined)
-        config.disabled = false;
+    const normalizedConfig = {
+        payload: config.payload,
+        disabled: !!config.disabled,
+        deps: config.deps || []
+    };
 
     useEffect(() => {
         if (!element) return;
         const item = {
-            element: element,
-            payload: config.payload,
-            disabled: config.disabled!
+            ...normalizedConfig,
+            element
         };
         addDragItem(item);
         return () => removeDragItem(item);
-    }, [...config.deps, element]);
+    }, [...normalizedConfig.deps, element]);
 
     return setElement;
 };

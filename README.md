@@ -49,7 +49,7 @@ import {useDrag} from 'react-drag-drop';
 
 Make an drag element.
 
-* `config: DragConfig`: Configuration for the drag element. Note that if `config` may change when the component using this hook rerenders, `config.deps` should be specified. Additionally, updates to `config` will only be reflected in `DragDropState` once the next drag and drop event occurs.
+* `config: DragConfig` (default: `{}`): Configuration for the drag element. Note that if `config` may change when the component using this hook rerenders, `config.deps` should be specified. Additionally, updates to `config` will only be reflected in `DragDropState` once the next drag and drop event occurs.
 * `return: RefCallback<T>`: A ref to assign to the element that should be draggable.
 
 ### `useDrop<T extends HTMLElement>(config)`
@@ -60,7 +60,7 @@ import {useDrop} from 'react-drag-drop';
 
 Make drop element.
 
-* `config: DropConfig`: Configuration for the drop element. Note that if `config` may change when the component using this hook rerenders, `config.deps` should be specified. Additionally, updates to `config` will only be reflected in `DragDropState` once the next drag and drop event occurs.
+* `config: DropConfig` (default: `{}`): Configuration for the drop element. Note that if `config` may change when the component using this hook rerenders, `config.deps` should be specified. Additionally, updates to `config` will only be reflected in `DragDropState` once the next drag and drop event occurs.
 * `return: RefCallback<T>`: A ref to assign to the element that should accept drag elements.
 
 ### `useDragDrop(config)`
@@ -71,7 +71,7 @@ import {useDragDrop} from 'react-drag-drop';
 
 Get the drag and drop state and handle events.
 
-* `config: DragDropConfig`: Configuration for state and event handlers.
+* `config: DragDropConfig` (default: `{}`): Configuration for state and event handlers.
 * `return: DragDropState`: The drag and drop state, updated according to `config.stateProps` and `requestAnimationFrame`.
 
 ### `DragConfig`
@@ -117,13 +117,13 @@ Object containing the following properties.
 
 * `dragging: boolean`: Whether an element is being dragged.
 * `hovering: boolean`: Whether the pointer is hovering a droppable element while dragging.
-* `dragPayload: any`: Payload of the item being dragged.
-* `dropPayload: any`: Payload of the item being hovered, if any.
-* `initialPointerPosition: Point | null`: Position of the pointer when dragging started, if dragging.
-* `pointerPosition: Point | null`: Position of the pointer, if dragging.
-* `initialElementPosition: Point | null`: (left, top) position of the drag element when dragging started, if dragging.
-* `elementPosition: Point | null`: (left, top) position of the drag element based on `displacement`, if dragging.
-* `displacement: Point | null`: Displacement between `initialPointerPosition` and `pointerPosition`, if dragging.
+* `dragPayload: any`: Payload of the item being dragged or `undefined` if not dragging.
+* `dropPayload: any`: Payload of the item being hovered or `undefined` if not dragging
+* `initialPointerPosition: Point | null`: `pointerPosition` when dragging started or `null` if not dragging.
+* `pointerPosition: Point | null`: Position of the pointer relative to the viewport or `null` if not dragging. Add `window.scrollX` and `window.scrollY` to get the position relative to the document.
+* `initialElementPosition: Point | null`: `elementPosition` when dragging started or `null` if not dragging.
+* `elementPosition: Point | null`: `initialElementPosition` plus `displacement` or `null` if not dragging.
+* `displacement: Point | null`: Displacement between `initialPointerPosition` and `pointerPosition` or `null` if not dragging.
 
 ### `Point`
 
