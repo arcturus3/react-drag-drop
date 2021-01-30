@@ -4,6 +4,9 @@
   "description": "Simple, flexible components and hooks for drag and drop in React.",
   "main": "build/index.js",
   "types": "build/index.d.ts",
+  "files": [
+    "/build"
+  ],
   "scripts": {
     "start": "parcel examples/src/index.html --out-dir examples/build",
     "build": "tsc",
