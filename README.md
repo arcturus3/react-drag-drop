@@ -5,7 +5,7 @@ Simple, flexible components and hooks for drag and drop in React.
 ## Installation
 
 ```sh
-npm i react-drag-drop
+npm i @arcturus3/react-drag-drop
 ```
 
 ## Examples
@@ -16,7 +16,7 @@ This library provides both components and hooks for drag and drop. The component
 
 ```tsx
 import React from 'react';
-import {Drag, Drop, DragView} from 'react-drag-drop';
+import {Drag, Drop, DragView} from '@arcturus3/react-drag-drop';
 
 export const Components = () => <>
     <DragView onDrop={() => alert('dropped')} />
@@ -30,7 +30,7 @@ export const Components = () => <>
 
 ```tsx
 import React from 'react';
-import {useDrag, useDrop, useDragDrop} from 'react-drag-drop';
+import {useDrag, useDrop, useDragDrop} from '@arcturus3/react-drag-drop';
 
 export const Hooks = () => {
     const dragRef = useDrag();
@@ -72,7 +72,7 @@ React UseGesture [does not support drag and drop](https://github.com/pmndrs/reac
 ### `<Drag />`
 
 ```tsx
-import {Drag} from 'react-drag-drop';
+import {Drag} from '@arcturus3/react-drag-drop';
 ```
 
 A component that wraps its children with a drag element and prevents browser touch actions from interfering with dragging. Use with `<DragView />` to display a drag preview and set the cursor style when hovering. It accepts the following props in addition to children.
@@ -85,7 +85,7 @@ A component that wraps its children with a drag element and prevents browser tou
 ### `<Drop />`
 
 ```tsx
-import {Drop} from 'react-drag-drop';
+import {Drop} from '@arcturus3/react-drag-drop';
 ```
 
 A component that wraps its children with a drop element. It accepts the following props in addition to children.
@@ -97,10 +97,10 @@ A component that wraps its children with a drop element. It accepts the followin
 ### `<DragView />`
 
 ```tsx
-import {DragView} from 'react-drag-drop';
+import {DragView} from '@arcturus3/react-drag-drop';
 ```
 
-A component that displays a preview of the element being dragged based on its payload. It's recommended to render this at the top of the component hierarchy so that it is always mounted. It accepts the following props.
+A component that displays a preview of the element being dragged based on its payload and disables text selection while dragging. It's recommended to render this at the top of the component hierarchy so that it is always mounted. It accepts the following props.
 
 * `preview?: (payload: any) => ReactNode` (default: uses `payload.preview` if defined, which is set automatically if `previewChildren={true}` on `<Drag />` components): Takes a drag payload and returns the preview to render. The preview could be calculated from the payload data or stored directly in the payload.
 * `hoverCursor?: string` (default: `''`): The `cursor` style to use while hovering over a `<Drag />` component before dragging starts.
@@ -117,7 +117,7 @@ A component that displays a preview of the element being dragged based on its pa
 ### `useDrag<T extends HTMLElement>(config)`
 
 ```tsx
-import {useDrag} from 'react-drag-drop';
+import {useDrag} from '@arcturus3/react-drag-drop';
 ```
 
 Make a drag element.
@@ -128,7 +128,7 @@ Make a drag element.
 ### `useDrop<T extends HTMLElement>(config)`
 
 ```tsx
-import {useDrop} from 'react-drag-drop';
+import {useDrop} from '@arcturus3/react-drag-drop';
 ```
 
 Make a drop element.
@@ -139,7 +139,7 @@ Make a drop element.
 ### `useDragDrop(config)`
 
 ```tsx
-import {useDragDrop} from 'react-drag-drop';
+import {useDragDrop} from '@arcturus3/react-drag-drop';
 ```
 
 Get the drag and drop state and handle events.

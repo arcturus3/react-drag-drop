@@ -1,5 +1,5 @@
 import React from 'react';
-import {useDrag, useDrop, useDragDrop} from 'react-drag-drop';
+import {useDrag, useDrop, useDragDrop} from '@arcturus3/react-drag-drop';
 
 export const Hooks = () => {
     const dragRef = useDrag();
