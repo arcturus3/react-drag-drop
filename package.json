@@ -1,6 +1,6 @@
 {
   "name": "@arcturus3/react-drag-drop",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Simple, flexible components and hooks for drag and drop in React.",
   "main": "build/index.js",
   "types": "build/index.d.ts",
