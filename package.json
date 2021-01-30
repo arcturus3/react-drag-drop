@@ -15,6 +15,14 @@
   "author": "Arti Schmidt",
   "license": "MIT",
   "repository": "github:arcturus3/react-drag-drop",
+  "keywords": [
+    "react",
+    "hooks",
+    "components",
+    "drag-and-drop",
+    "drag",
+    "drop"
+  ],
   "devDependencies": {
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
