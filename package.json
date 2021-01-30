@@ -13,7 +13,8 @@
     "prepublishOnly": "npm run build"
   },
   "author": "Arti Schmidt",
-  "license": "ISC",
+  "license": "MIT",
+  "repository": "github:arcturus3/react-drag-drop",
   "devDependencies": {
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
